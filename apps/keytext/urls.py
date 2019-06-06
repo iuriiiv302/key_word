@@ -8,6 +8,5 @@ router = DefaultRouter()
 urlpatterns = router.urls
 
 urlpatterns += [
-    # path('', TextkeyViewSet.as_view({'get': 'list'}), name='text_list'),
     path('list_text/', TextFilterKey.as_view(), name='text_list'),
 ]
