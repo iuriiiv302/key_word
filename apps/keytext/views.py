@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from drf_util.decorators import serialize_decorator
 from rest_framework import viewsets
 from rest_framework.generics import GenericAPIView
@@ -15,11 +16,15 @@ class TextFilterKey(GenericAPIView):
 
     @serialize_decorator(TextkeySerializer)
     def post(self, request):
-        validated_data = request.serializer.validated_data
-        print(validated_data)
-        text = KeyWord.objects.filter(key=validated_data['key'])
-        response_data = TextkeyAllSerializer(text, many=True).data
-        return Response(response_data)
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            validated_data = request.serializer.validated_data
+            text = KeyWord.objects.filter(key=validated_data['key'])
+            response_data = TextkeyAllSerializer(text, many=True).data
+            return Response(response_data)
+        else:
+            return JsonResponse({'key':'incorrect'})
+
 
     def get(self,request):
         text = KeyWord.objects.order_by('key')
