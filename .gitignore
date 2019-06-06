@@ -1,0 +1,10 @@
+.idea/
+venv/
+*.pyc
+media/*
+*/production.py
+*/testing.py
+db.sqlite3
+.coverage
+htmlcov/*
+.mypy_cache/
