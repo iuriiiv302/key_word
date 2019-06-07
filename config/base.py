@@ -160,7 +160,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DATE_FORMAT = "%Y-%m-%d %H:%m"
-ADMIN_EMAILS = ['admin@godina.md']
+ADMIN_EMAILS = ['admin@iurii.md']
 
 # TEST_RUNNER = 'apps.common.testing.NoDbTestRunner'
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

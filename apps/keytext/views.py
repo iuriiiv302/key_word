@@ -23,6 +23,12 @@ class TextFilterKey(GenericAPIView):
             return JsonResponse({'key': 'incorrect'})
         return Response(response_data)
 
+
+class TextAll(GenericAPIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = ()
+    serializer_class = TextkeyAllSerializer
+
     def get(self, request):
         text = KeyWord.objects.order_by('key')
         return Response(TextkeyAllSerializer(text, many=True).data)

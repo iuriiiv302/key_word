@@ -16,12 +16,6 @@ class UserSearchSerializer(serializers.ModelSerializer):
         fields = ("id", "username")
 
 
-class UserTaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ("first_name", "last_name")
-
-
 class UserMeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
