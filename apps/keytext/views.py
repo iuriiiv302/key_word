@@ -17,15 +17,15 @@ class TextFilterKey(GenericAPIView):
     @serialize_decorator(TextkeySerializer)
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            validated_data = request.serializer.validated_data
-            text = KeyWord.objects.filter(key=validated_data['key'])
-            response_data = TextkeyAllSerializer(text, many=True).data
-            return Response(response_data)
-        else:
-            return JsonResponse({'key':'incorrect'})
+        validated_data = request.serializer.validated_data
+        text = KeyWord.objects.filter(key=validated_data['key'])
+        response_data = TextkeyAllSerializer(text, many=True).data
+        if response_data == []:
+            return JsonResponse({'key': 'incorrect'})
+        return Response(response_data)
 
 
-    def get(self,request):
-        text = KeyWord.objects.order_by('key')
-        return Response(TextkeyAllSerializer(text, many=True).data)
+
+def get(self, request):
+    text = KeyWord.objects.order_by('key')
+    return Response(TextkeyAllSerializer(text, many=True).data)
