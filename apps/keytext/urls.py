@@ -4,7 +4,6 @@ from rest_framework.routers import DefaultRouter
 from apps.keytext.views import TextFilterKey
 
 router = DefaultRouter()
-# router.register(r'', TextkeyViewSet, base_name='all_tasks')
 urlpatterns = router.urls
 
 urlpatterns += [
