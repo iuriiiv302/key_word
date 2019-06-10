@@ -9,26 +9,25 @@ from apps.keytext.serializers import TextkeyAllSerializer, TextkeySerializer
 
 
 class TextFilterKey(GenericAPIView):
-    permission_classes = (IsAuthenticated,)
-    authentication_classes = ()
     serializer_class = TextkeySerializer
+    permission_classes = (IsAuthenticated,)
 
     @serialize_decorator(TextkeySerializer)
     def post(self, request):
         validated_data = request.serializer.validated_data
-        text = KeyWord.objects.filter(key=validated_data['key'])
+        text = KeyWord.objects.filter(key=validated_data['key'], user=request.user.id)
         response_data = TextkeyAllSerializer(text, many=True).data
-        print(response_data)
         if response_data == []:
             return JsonResponse({'key': 'incorrect'})
         return Response(response_data)
 
 
 class TextAll(GenericAPIView):
-    permission_classes = (AllowAny,)
-    authentication_classes = ()
+    permission_classes = (IsAuthenticated,)
+    # authentication_classes = ()
     serializer_class = TextkeyAllSerializer
 
     def get(self, request):
-        text = KeyWord.objects.order_by('key')
+        # text = KeyWord.objects.order_by('key')
+        text = KeyWord.objects.filter(user=request.user.id)
         return Response(TextkeyAllSerializer(text, many=True).data)
