@@ -7,7 +7,7 @@ router = DefaultRouter()
 urlpatterns = router.urls
 
 urlpatterns += [
-    path('list_text/', TextFilterKey.as_view(), name='text_list'),
+    path('search_by_key/', TextFilterKey.as_view(), name='text_list'),
     path('list_text_all/', TextAll.as_view(), name='text_all_list'),
     path('add_new_text/', AddNewText.as_view(), name='text_add_new'),
     path('deleted_text/<int:pk>/', DeleteText.as_view(), name='text_deleted'),
