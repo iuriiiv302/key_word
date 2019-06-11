@@ -27,11 +27,9 @@ class TextFilterKey(GenericAPIView):
 # Show all text_User
 class TextAll(GenericAPIView):
     permission_classes = (IsAuthenticated,)
-    # authentication_classes = ()
     serializer_class = TextkeyAllSerializer
 
     def get(self, request):
-        # text = KeyWord.objects.order_by('key')
         text = KeyWord.objects.filter(user=request.user.id)
         return Response(TextkeyAllSerializer(text, many=True).data)
 
@@ -52,18 +50,16 @@ class AddNewText(GenericAPIView):
         return Response(status=201)
 
 
+# Deleted Text
 class DeleteText(GenericAPIView):
     serializer_class = TextkeyAllSerializer
     permission_classes = (IsAuthenticated,)
 
-    # permission_classes = (AllowAny,)
-
     def delete(self, request, pk):
         text = KeyWord.objects.filter(pk=pk, user=request.user.id)
-        print(text)
         if text:
             text.delete()
-            return Response(status=204)
+            return JsonResponse({'Text deleted': 'success'})  # Response(status=204)
         else:
             return JsonResponse({'Id': 'error'})
 

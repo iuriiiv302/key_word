@@ -17,6 +17,15 @@ class TextkeyAllSerializer(serializers.ModelSerializer):
 
 
 class TextAllSerializer(serializers.ModelSerializer):
+    key = serializers.ModelSerializer
+
+    def validate_key(self, attrs):
+        key = KeyWord.objects.filter(key=attrs).first()
+        if not key:
+            return attrs
+        else:
+            raise ValidationError("the key is repeated, it must be unique.")
+
     class Meta:
         model = KeyWord
         fields = ('key', 'full_text')
