@@ -1,10 +1,8 @@
-from django.http import JsonResponse
 from drf_util.decorators import serialize_decorator
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-from rest_framework.status import HTTP_204_NO_CONTENT
 
 from apps.keytext.models import KeyWord
 from apps.keytext.serializers import TextkeyAllSerializer, TextkeySerializer, TextAllSerializer, TextUpdateSerializer
@@ -17,10 +15,9 @@ class TextFilterKey(GenericAPIView):
     @serialize_decorator(TextkeySerializer)
     def post(self, request):
         validated_data = request.serializer.validated_data
-        text = KeyWord.objects.filter(key=validated_data['key'], user=request.user.id)
-        response_data = TextkeyAllSerializer(text, many=True).data
-        if response_data == []:
-            return JsonResponse({'key': 'incorrect'})
+        text = KeyWord.objects.get(key=validated_data['key'], user=request.user.id)
+        response_data = TextkeyAllSerializer(text).data
+
         return Response(response_data)
 
 
@@ -59,9 +56,9 @@ class DeleteText(GenericAPIView):
         text = KeyWord.objects.filter(pk=pk, user=request.user.id)
         if text:
             text.delete()
-            return JsonResponse({'Text deleted': 'success'})  # Response(status=204)
+            return Response({'Text deleted': 'success'})  # Response(status=204)
         else:
-            return JsonResponse({'Id': 'error'})
+            return Response({'Id': 'error'})
 
 
 # Update Text and key. From ID
@@ -70,20 +67,16 @@ class UpdateText(GenericAPIView):
     permission_classes = (IsAuthenticated,)
 
     def put(self, request):
-        try:
-            serializer = TextUpdateSerializer(data=request.data)
-            if serializer.is_valid():
-                data = serializer.validated_data
-                text = KeyWord.objects.get(id=data['id'], user=request.user.id)
-                text.user = request.user
-                text.key = data['key']
-                text.full_text = data['full_text']
-                text.save()
-                response_data = TextkeyAllSerializer(text).data
-                return Response(response_data)
-            if Response.status_code == 500:
-                return JsonResponse({'Error': 'status_code = 500'})
-            else:
-                return Response(serializer.errors, status=400)
-        except:
-            return JsonResponse({'Id': 'Error'})
+        serializer = TextUpdateSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            text = KeyWord.objects.get(id=data['id'], user=request.user.id)
+            text.user = request.user
+            text.key = data['key']
+            text.full_text = data['full_text']
+            text.save()
+            response_data = TextkeyAllSerializer(text).data
+            return Response(response_data)
+        else:
+            return Response(serializer.errors, status=400)
+
