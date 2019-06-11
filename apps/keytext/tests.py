@@ -1,11 +1,6 @@
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework.test import APIClient, APIRequestFactory
-
-from django.test import TestCase
-
-from apps.comment.models import Comment
-from apps.notification.views import AddNotificationComment
 
 from django.test import TestCase
 
@@ -108,7 +103,7 @@ class TestTextCase(TestCase):
         self.assertIsNotNone(self.user)
         response1 = self.client.post(reverse('text_add_new'), {
             "key": "string",
-            "full_text": "string",,
+            "full_text": "string",
         })
         response2 = self.client.put(reverse('text_update'), {
             "id": 1,
