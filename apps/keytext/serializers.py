@@ -37,7 +37,7 @@ class TextUpdateSerializer(serializers.ModelSerializer):
     def validate_id(self, value):
         text = KeyWord.objects.filter(id=value).first()
         if not text:
-            raise ValidationError("Not exists")
+            raise ValidationError("there is no text with such id")
         return value
 
     class Meta:

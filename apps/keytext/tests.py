@@ -9,7 +9,7 @@ from apps.notification.views import AddNotificationComment
 
 from django.test import TestCase
 
-class TextTestCase(TestCase):
+class TestTextCase(TestCase):
     def setUp(self):
         self.client = APIClient()
 
